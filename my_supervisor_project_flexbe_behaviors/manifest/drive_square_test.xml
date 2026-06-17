@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<behavior name="Drive Square Test">
+
+    <executable package_path="my_supervisor_project_flexbe_behaviors.drive_square_test_sm" class="DriveSquareTestSM" />
+    <tagstring>test</tagstring>
+    <author>Karan</author>
+    <date>Wed Jun 17 2026</date>
+    <description>
+        Drives forward, turns, then stops. Flat (non-hierarchical) test of TimedTwistState on turtlebot3.
+    </description>
+
+    <!-- Contained Behaviors -->
+
+    <!-- Available Parameters -->
+    <params>
+    </params>
+
+</behavior>
