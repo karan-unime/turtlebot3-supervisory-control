@@ -80,17 +80,20 @@ class RotateAngleState(EventState):
 
     def on_enter(self, userdata):
         self._return = None
+        self._start_yaw = None
 
-        self._start_yaw = self._get_yaw()
+        current_yaw = self._get_yaw()
 
-        if self._start_yaw is None:
+        if current_yaw is None:
             Logger.logwarn('Waiting for odometry...')
             return
+
+        self._start_yaw = current_yaw
 
         Logger.loginfo(
             f'Start yaw: {math.degrees(self._start_yaw):.1f} deg'
         )
-
+        
     def execute(self, userdata):
         if self._return is not None:
             return self._return
@@ -98,6 +101,15 @@ class RotateAngleState(EventState):
         current_yaw = self._get_yaw()
 
         if current_yaw is None:
+            return None
+
+        # First odometry message may arrive after on_enter()
+        if self._start_yaw is None:
+            self._start_yaw = current_yaw
+
+            Logger.loginfo(
+                f'Start yaw: {math.degrees(self._start_yaw):.1f} deg'
+            )
             return None
 
         diff = self._normalize_angle(
@@ -111,7 +123,7 @@ class RotateAngleState(EventState):
             f'{math.degrees(self._target_angle):.1f} deg'
         )
 
-        if rotated >= self._target_angle:
+        if rotated >= self._target_angle - math.radians(5):
             Logger.loginfo('Target angle reached.')
             self._return = 'done'
             return 'done'
@@ -126,7 +138,7 @@ class RotateAngleState(EventState):
         elif remaining > 0.1:
             speed = self._angular_speed * 0.5
         else:
-            speed = 0.08
+            speed = 0.12
 
         msg.angular.z = self._direction * speed
 

@@ -1,0 +1,17 @@
+export TURTLEBOT3_MODEL=burger
+
+source /opt/ros/humble/setup.bash
+source ~/turtlebot3_ws/install/setup.bash
+
+ros2 launch turtlebot3_gazebo empty_world.launch.py
+
+//////////////////////////////////////////////////////
+
+source /opt/ros/humble/setup.bash
+source ~/turtlebot3_ws/install/setup.bash
+
+ros2 launch flexbe_webui flexbe_full.launch.py
+
+//////////////////////////////////////////////////////
+
+http://localhost:8000
