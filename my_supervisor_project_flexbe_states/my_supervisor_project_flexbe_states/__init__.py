@@ -6,3 +6,4 @@ from .obstacle_detected_state import ObstacleDetectedState
 from .choose_direction_state import ChooseDirectionState
 from .move_until_clear_state import MoveUntilClearState
 from .smart_navigator_state import SmartNavigatorState
+from .smart_goal_navigator_state import SmartGoalNavigatorState
