@@ -1,31 +1,45 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 from rclpy.duration import Duration
+
 from flexbe_core import EventState, Logger
+from my_supervisor_project_flexbe_states.mission_config import WAIT_TIME
 
 
 class WaitState(EventState):
     """
-    Wait for a specified amount of time.
+    Wait State
 
-    -- wait_time     float   Time to wait in seconds
+    Reads the waiting time from mission_config.py
 
-    <= done                  Waiting finished
+    <= done
     """
 
-    def __init__(self, wait_time):
-        super().__init__(outcomes=['done'])
+    def __init__(self):
 
-        self._wait_time = Duration(seconds=wait_time)
+        super().__init__(
+            outcomes=['done']
+        )
+
+        self._wait_time = Duration(
+            seconds=WAIT_TIME
+        )
+
         self._start_time = None
+
+
+    ########################################################
 
     def on_enter(self, userdata):
 
         self._start_time = self._node.get_clock().now()
 
         Logger.loginfo(
-            f'Waiting for {self._wait_time.nanoseconds / 1e9:.1f} seconds'
+            f"Waiting {WAIT_TIME:.1f} second(s)"
         )
+
+
+    ########################################################
 
     def execute(self, userdata):
 
@@ -35,7 +49,9 @@ class WaitState(EventState):
         )
 
         if elapsed >= self._wait_time:
-            Logger.loginfo('Wait finished.')
+
+            Logger.loginfo("Wait finished.")
+
             return 'done'
 
         return None
